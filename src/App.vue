@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <vheader :seller="seller"></vheader>
+    <vheader :seller="seller" v-if="isloading"></vheader>
     <ul class="nav">
       <router-link to="/route/goods" tag="li"><a>商品</a></router-link>
       <router-link to="/route/judge" tag="li"><a>评价</a></router-link>
@@ -16,11 +16,15 @@ export default {
   name: 'app',
   data () {
     return {
+      isloading: false,
       seller: {}
     }
   },
   created: function () {
+    let that = this
     this.$http.get('/api/seller').then(function (response) {
+      that.isloading = true
+      that.seller = response.data.data
       console.log(response)
     }).catch(function (err) {
       console.log(err)
